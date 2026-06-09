@@ -8,6 +8,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
@@ -15,39 +16,58 @@ const { width } = Dimensions.get('window');
 interface NavBarProps {
   scrollY?: Animated.Value;
   activeRoute?: string;
+  visible?: boolean;
 }
 
-export default function NavBar({ scrollY, activeRoute = 'Home' }: NavBarProps) {
+export default function NavBar({ scrollY, activeRoute = 'Home', visible = true }: NavBarProps) {
   const navigation = useNavigation<any>();
+  const insets = useSafeAreaInsets();
   const navOpacity = useRef(new Animated.Value(0)).current;
   const navY = useRef(new Animated.Value(-20)).current;
   const pillWidth = useRef(new Animated.Value(0)).current;
   const [menuOpen, setMenuOpen] = useState(false);
   const menuHeight = useRef(new Animated.Value(0)).current;
   const menuOpacity = useRef(new Animated.Value(0)).current;
+  
+  // Animation for hiding/showing the header on scroll
+  const visibilityAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(navOpacity, {
+        toValue: 1,
+        duration: 600,
+        delay: 1600,
+        useNativeDriver: true,
+      }),
+      Animated.timing(navY, {
+        toValue: 0,
+        duration: 600,
+        delay: 1600,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  // Animate visibility based on prop
+  useEffect(() => {
+    Animated.timing(visibilityAnim, {
+      toValue: visible ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [visible]);
+
+  const translateY = visibilityAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-100, 0],
+  });
 
   const navItems = [
     { label: 'Work', route: 'Home' },
     { label: 'About', route: 'About' },
     { label: 'Contact', route: 'Contact' },
   ];
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(navOpacity, {
-        toValue: 1,
-        duration: 800,
-        delay: 2800,
-        useNativeDriver: true,
-      }),
-      Animated.timing(navY, {
-        toValue: 0,
-        duration: 800,
-        delay: 2800,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
 
   const toggleMenu = () => {
     const toOpen = !menuOpen;
@@ -69,7 +89,14 @@ export default function NavBar({ scrollY, activeRoute = 'Home' }: NavBarProps) {
   return (
     <>
       <Animated.View
-        style={[styles.nav, { opacity: navOpacity, transform: [{ translateY: navY }] }]}
+        style={[
+          styles.nav,
+          {
+            opacity: navOpacity,
+            transform: [{ translateY: Animated.add(navY, translateY) }],
+            paddingTop: insets.top + 16,
+          },
+        ]}
       >
         {/* Logo */}
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
@@ -113,7 +140,16 @@ export default function NavBar({ scrollY, activeRoute = 'Home' }: NavBarProps) {
       </Animated.View>
 
       {/* Mobile Menu Dropdown */}
-      <Animated.View style={[styles.mobileMenu, { height: menuHeight, opacity: menuOpacity }]}>
+      <Animated.View
+        style={[
+          styles.mobileMenu,
+          {
+            height: menuHeight,
+            opacity: menuOpacity,
+            top: insets.top + 64,
+          },
+        ]}
+      >
         {navItems.map((item, i) => (
           <TouchableOpacity
             key={item.label}
@@ -143,7 +179,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 32,
-    paddingVertical: 24,
+    paddingBottom: 16,
   },
   navLogo: {
     fontFamily: 'serif',

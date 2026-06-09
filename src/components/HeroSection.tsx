@@ -1,26 +1,25 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import {
-  View,
-  Text,
   Animated,
+  Dimensions,
   Easing,
   StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+  Text,
+  View
+} from "react-native";
 
-const { width, height } = Dimensions.get('window');
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const { width, height } = Dimensions.get("window");
 
 interface HeroProps {
   onScrollHint?: () => void;
 }
 
-const LINES = [
-  'Frontend Developer',
-  'Mobile Developer',
-];
+const LINES = ["Frontend Developer", "Mobile Developer"];
 
 export default function HeroSection({ onScrollHint }: HeroProps) {
+  const insets = useSafeAreaInsets();
   const lineAnims = LINES.map(() => ({
     opacity: useRef(new Animated.Value(0)).current,
     y: useRef(new Animated.Value(40)).current,
@@ -32,7 +31,7 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const delay = 3200; // after preloader
+    const delay = 1800; // after preloader (preloader = ~1950ms total)
 
     lineAnims.forEach((anim, i) => {
       Animated.parallel([
@@ -72,9 +71,17 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
     setTimeout(() => {
       Animated.loop(
         Animated.sequence([
-          Animated.timing(scrollY, { toValue: 8, duration: 800, useNativeDriver: true }),
-          Animated.timing(scrollY, { toValue: 0, duration: 800, useNativeDriver: true }),
-        ])
+          Animated.timing(scrollY, {
+            toValue: 8,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(scrollY, {
+            toValue: 0,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ]),
       ).start();
       Animated.timing(scrollOpacity, {
         toValue: 1,
@@ -114,7 +121,10 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
 
       {/* Sub info row */}
       <Animated.View
-        style={[styles.subRow, { opacity: subOpacity, transform: [{ translateY: subY }] }]}
+        style={[
+          styles.subRow,
+          { opacity: subOpacity, transform: [{ translateY: subY }] },
+        ]}
       >
         <View style={styles.subLeft}>
           <Text style={styles.subLabel}>Based in</Text>
@@ -152,44 +162,44 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
 const styles = StyleSheet.create({
   hero: {
     height: height,
-    backgroundColor: '#0a0a0a',
-    justifyContent: 'center',
+    backgroundColor: "#0a0a0a",
+    justifyContent: "center",
     paddingHorizontal: 32,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   noise: {
     ...StyleSheet.absoluteFillObject,
     opacity: 0.03,
-    backgroundColor: '#888',
+    backgroundColor: "#888",
   },
   glow: {
-    position: 'absolute',
+    position: "absolute",
     top: height * 0.1,
     right: -100,
     width: 500,
     height: 500,
     borderRadius: 250,
-    backgroundColor: 'rgba(200, 255, 101, 0.04)',
+    backgroundColor: "rgba(200, 255, 101, 0.04)",
   },
   headlineWrap: {
     marginBottom: 56,
   },
   lineClip: {
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   headline: {
     fontSize: Math.min(width * 0.13, 96),
-    color: '#f0ede6',
-    fontFamily: 'serif',
-    fontWeight: '300',
+    color: "#f0ede6",
+    fontFamily: "serif",
+    fontWeight: "300",
     lineHeight: Math.min(width * 0.14, 105),
     letterSpacing: -3,
   },
   subRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 24,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
   },
   subLeft: {
     gap: 4,
@@ -198,51 +208,51 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   subLabel: {
-    fontFamily: 'monospace',
+    fontFamily: "monospace",
     fontSize: 9,
-    color: '#555',
+    color: "#555",
     letterSpacing: 2,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   subValue: {
-    fontFamily: 'monospace',
-    fontSize: 12,
-    color: '#888',
+    fontFamily: "monospace",
+    fontSize: 14,
+    color: "#888",
     letterSpacing: 0.5,
   },
   divider: {
     width: 1,
     height: 32,
-    backgroundColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: "rgba(255,255,255,0.08)",
   },
   scrollIndicator: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 40,
     left: 32,
-    alignItems: 'center',
+    alignItems: "center",
     gap: 10,
   },
   scrollLine: {
     width: 1,
     height: 48,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: "rgba(255,255,255,0.15)",
   },
   scrollText: {
-    fontFamily: 'monospace',
+    fontFamily: "monospace",
     fontSize: 9,
-    color: '#555',
+    color: "#555",
     letterSpacing: 2,
-    textTransform: 'uppercase',
-    transform: [{ rotate: '90deg' }],
+    textTransform: "uppercase",
+    transform: [{ rotate: "90deg" }],
     marginTop: 12,
   },
   yearTag: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 40,
     right: 32,
-    fontFamily: 'monospace',
+    fontFamily: "monospace",
     fontSize: 10,
-    color: '#333',
+    color: "#333",
     letterSpacing: 1,
   },
 });

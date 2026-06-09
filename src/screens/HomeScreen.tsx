@@ -1,78 +1,94 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
   Animated,
   Dimensions,
-} from 'react-native';
-import NavBar from '../components/NavBar';
-import HeroSection from '../components/HeroSection';
-import ProjectCard, { ProjectData } from '../components/ProjectCard';
-import Preloader from '../components/Preloader';
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import HeroSection from "../components/HeroSection";
+import NavBar from "../components/NavBar";
+import Preloader from "../components/Preloader";
+import ProjectCard from "../components/ProjectCard";
+import ScrollReveal, { ScrollRevealHandle } from "../components/ScrollReveal";
+import { PROJECTS } from "../constants/projects";
 
-const { width } = Dimensions.get('window');
-
-const PROJECTS: ProjectData[] = [
-  {
-    id: '1',
-    title: 'Neon Bank',
-    category: 'Banking',
-    year: '2025',
-    tags: ['Product Design', 'iOS', 'Fintech'],
-    color: '#1a1f3a',
-    index: 1,
-  },
-  {
-    id: '2',
-    title: 'Pulse Fitness',
-    category: 'Health & Fitness',
-    year: '2024',
-    tags: ['UX Research', 'Android', 'Wearables'],
-    color: '#1a2e1a',
-    index: 2,
-  },
-  {
-    id: '3',
-    title: 'Streamly',
-    category: 'Streaming',
-    year: '2024',
-    tags: ['Design System', 'Web', 'TV'],
-    color: '#2e1a1a',
-    index: 3,
-  },
-  {
-    id: '4',
-    title: 'Plato Food',
-    category: 'Food Tech',
-    year: '2023',
-    tags: ['End-to-end', 'iOS', 'Marketplace'],
-    color: '#2a1f0a',
-    index: 4,
-  },
-];
+const { width, height: VIEWPORT_H } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const [preloaderDone, setPreloaderDone] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollYRaw = useRef(0);
+  const lastScrollY = useRef(0);
+  const [navVisible, setNavVisible] = useState(true);
+
+  // Refs for each scroll-reveal section
+  const sectionHeaderRef = useRef<ScrollRevealHandle>(null);
+  const projectRefs = useRef<(ScrollRevealHandle | null)[]>([]);
+  const aboutRef = useRef<ScrollRevealHandle>(null);
+  const contactRef = useRef<ScrollRevealHandle>(null);
+
+  const checkAllReveal = (y: number) => {
+    sectionHeaderRef.current?.checkVisible(y, VIEWPORT_H);
+    projectRefs.current.forEach((r) => r?.checkVisible(y, VIEWPORT_H));
+    aboutRef.current?.checkVisible(y, VIEWPORT_H);
+    contactRef.current?.checkVisible(y, VIEWPORT_H);
+  };
+
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    {
+      useNativeDriver: true,
+      listener: (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+        const y = e.nativeEvent.contentOffset.y;
+        const diff = y - lastScrollY.current;
+
+        // Ignore small jittery movements (important for Web)
+        if (Math.abs(diff) < 6 && y > 10) return;
+
+        // Smart nav logic
+        if (y < 50) {
+          setNavVisible(true);
+        } else if (diff > 0 && navVisible) {
+          setNavVisible(false);
+        } else if (diff < 0 && !navVisible) {
+          setNavVisible(true);
+        }
+
+        lastScrollY.current = y;
+        scrollYRaw.current = y;
+        checkAllReveal(y);
+      },
+    },
+  );
+
+  const handleEmail = () => {
+    Linking.openURL("mailto:muhammadagbaje85@gmail.com").catch(() => null);
+  };
 
   return (
     <View style={styles.root}>
       {!preloaderDone && (
-        <Preloader onComplete={() => setPreloaderDone(true)} />
+        <Preloader
+          onComplete={() => {
+            setPreloaderDone(true);
+            setTimeout(() => checkAllReveal(0), 300);
+          }}
+        />
       )}
 
       {preloaderDone && (
-        <>
-          <NavBar scrollY={scrollY} activeRoute="Home" />
+        <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+          <NavBar scrollY={scrollY} activeRoute="Home" visible={navVisible} />
 
           <Animated.ScrollView
             style={styles.scroll}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: true }
-            )}
+            onScroll={handleScroll}
             scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}
           >
@@ -81,44 +97,65 @@ export default function HomeScreen() {
 
             {/* Projects section */}
             <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionLabel}>Selected Work</Text>
-                <Text style={styles.sectionCount}>{PROJECTS.length} Projects</Text>
-              </View>
+              <ScrollReveal
+                ref={sectionHeaderRef}
+                delay={80}
+                fromY={24}
+                duration={600}
+              >
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionLabel}>Selected Work</Text>
+                  <Text style={styles.sectionCount}>
+                    {PROJECTS.length} Projects
+                  </Text>
+                </View>
+              </ScrollReveal>
 
               <View style={styles.projectList}>
-                {PROJECTS.map((project, i) => (
-                  <ProjectCard
+                {PROJECTS.map((project, index) => (
+                  <ScrollReveal
                     key={project.id}
-                    project={project}
-                    animDelay={i * 100}
-                  />
+                    ref={(el) => {
+                      projectRefs.current[index] = el;
+                    }}
+                    delay={100 + index * 50}
+                    fromY={30}
+                  >
+                    <ProjectCard project={project} />
+                  </ScrollReveal>
                 ))}
               </View>
             </View>
 
             {/* About teaser */}
-            <View style={styles.aboutTeaser}>
-              <View style={styles.aboutLine} />
-              <Text style={styles.aboutHeadline}>
-                Building apps{'\n'}that perform flawlessly.
-              </Text>
-              <Text style={styles.aboutBody}>
-                Over 2 years of experience translating ideas into seamless, high-performance
-                interfaces across web and mobile platforms.
-              </Text>
-            </View>
+            <ScrollReveal ref={aboutRef} delay={100} fromY={30}>
+              <View style={styles.aboutTeaser}>
+                <View style={styles.aboutLine} />
+                <Text style={styles.aboutHeadline}>
+                  Turning complex problems into elegant mobile & web solutions.
+                </Text>
+                <Text style={styles.aboutBody}>
+                  I'm a Fullstack Developer with a passion for building
+                  high-performance, user-centric applications that make a
+                  difference.
+                </Text>
+              </View>
+            </ScrollReveal>
 
-            {/* Contact section */}
-            <View style={styles.contact}>
-              <Text style={styles.contactEyebrow}>Get in touch</Text>
-              <Text style={styles.contactHeadline}>Let's work together</Text>
-              <Text style={styles.contactEmail}>muhammadagbaje85@gmail.com</Text>
-              <View style={styles.contactDivider} />
-              <Text style={styles.contactFoot}>©2026 Agbaje Muhammed</Text>
-            </View>
+            {/* Contact teaser */}
+            <ScrollReveal ref={contactRef} delay={100} fromY={30}>
+              <View style={styles.contact}>
+                <Text style={styles.contactEyebrow}>Get in touch</Text>
+                <Text style={styles.contactHeadline}>Let's work together</Text>
+                <TouchableOpacity onPress={handleEmail}>
+                  <Text style={styles.contactEmail}>
+                    muhammadagbaje85@gmail.com
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollReveal>
           </Animated.ScrollView>
-        </>
+        </SafeAreaView>
       )}
     </View>
   );
@@ -127,7 +164,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#0a0a0a',
+    backgroundColor: "#0a0a0a",
   },
   scroll: {
     flex: 1,
@@ -137,25 +174,25 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   },
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingBottom: 24,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.06)',
+    borderBottomColor: "rgba(255,255,255,0.06)",
     marginBottom: 24,
   },
   sectionLabel: {
-    fontFamily: 'monospace',
-    fontSize: 10,
-    color: '#555',
+    fontFamily: "monospace",
+    fontSize: 11,
+    color: "#555",
     letterSpacing: 3,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   sectionCount: {
-    fontFamily: 'monospace',
-    fontSize: 10,
-    color: '#555',
+    fontFamily: "monospace",
+    fontSize: 11,
+    color: "#555",
     letterSpacing: 1,
   },
   projectList: {
@@ -165,67 +202,66 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     paddingVertical: 80,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.06)',
+    borderTopColor: "rgba(255,255,255,0.06)",
     gap: 24,
   },
   aboutLine: {
     width: 40,
     height: 1,
-    backgroundColor: '#c8ff65',
+    backgroundColor: "#c8ff65",
   },
   aboutHeadline: {
-    fontFamily: 'serif',
+    fontFamily: "serif",
     fontSize: Math.min(width * 0.09, 64),
-    color: '#f0ede6',
-    fontWeight: '300',
+    color: "#f0ede6",
+    fontWeight: "300",
     letterSpacing: -2,
     lineHeight: Math.min(width * 0.1, 72),
   },
   aboutBody: {
-    fontFamily: 'monospace',
-    fontSize: 13,
-    color: '#666',
-    lineHeight: 22,
-    maxWidth: 480,
+    fontFamily: "monospace",
+    fontSize: 15,
+    color: "#888",
+    lineHeight: 24,
+    maxWidth: 520,
   },
   contact: {
     paddingHorizontal: 32,
     paddingVertical: 80,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.06)',
+    borderTopColor: "rgba(255,255,255,0.06)",
     gap: 16,
   },
   contactEyebrow: {
-    fontFamily: 'monospace',
-    fontSize: 10,
-    color: '#c8ff65',
+    fontFamily: "monospace",
+    fontSize: 18,
+    color: "#c8ff65",
     letterSpacing: 3,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   contactHeadline: {
-    fontFamily: 'serif',
-    fontSize: Math.min(width * 0.11, 72),
-    color: '#f0ede6',
-    fontWeight: '300',
+    fontFamily: "serif",
+    fontSize: Math.min(width * 0.14, 50),
+    color: "#f0ede6",
+    fontWeight: "300",
     letterSpacing: -2,
     lineHeight: Math.min(width * 0.12, 80),
   },
   contactEmail: {
-    fontFamily: 'monospace',
-    fontSize: 14,
-    color: '#888',
-    textDecorationLine: 'underline',
-    marginTop: 8,
+    fontFamily: "monospace",
+    fontSize: 16,
+    color: "#f0ede6",
+    marginTop: 24,
   },
   contactDivider: {
     height: 1,
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    marginVertical: 24,
+    backgroundColor: "rgba(255,255,255,0.06)",
+    marginVertical: 16,
   },
   contactFoot: {
-    fontFamily: 'monospace',
+    fontFamily: "monospace",
     fontSize: 10,
-    color: '#333',
+    color: "#333",
     letterSpacing: 1,
   },
 });

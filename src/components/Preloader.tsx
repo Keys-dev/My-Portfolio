@@ -41,7 +41,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     // Step 2: Counter from 0 → 100
     Animated.timing(counter, {
       toValue: 100,
-      duration: 2000,
+      duration: 1200,
       easing: Easing.inOut(Easing.cubic),
       useNativeDriver: false,
     }).start(() => {
@@ -50,18 +50,18 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         Animated.parallel([
           Animated.timing(overlayTop, {
             toValue: -height / 2,
-            duration: 700,
+            duration: 600,
             easing: Easing.inOut(Easing.cubic),
             useNativeDriver: true,
           }),
           Animated.timing(overlayBottom, {
             toValue: height / 2,
-            duration: 700,
+            duration: 600,
             easing: Easing.inOut(Easing.cubic),
             useNativeDriver: true,
           }),
         ]).start(() => onComplete());
-      }, 300);
+      }, 150);
     });
   }, []);
 
