@@ -26,10 +26,10 @@ export const PROJECTS: ProjectData[] = [
   },
   {
     id: '2',
-    title: 'Pulse Fitness',
-    category: 'Health & Fitness',
+    title: 'Pokedex',
+    category: '',
     year: '2024',
-    tags: ['UX Research', 'Android', 'Wearables'],
+    tags: ['UX Research', 'Android/IOS', 'Thesarus'],
     color: '#1a2e1a',
     index: 2,
     image: null, // TODO: Add project image
@@ -38,8 +38,8 @@ export const PROJECTS: ProjectData[] = [
   },
   {
     id: '3',
-    title: 'Streamly',
-    category: 'Streaming',
+    title: 'Tempo',
+    category: 'Reminder',
     year: '2024',
     tags: ['Design System', 'Web', 'TV'],
     color: '#2e1a1a',
@@ -50,8 +50,8 @@ export const PROJECTS: ProjectData[] = [
   },
   {
     id: '4',
-    title: 'Plato Food',
-    category: 'Food Tech',
+    title: 'ArchivX',
+    category: 'Record Tracking',
     year: '2023',
     tags: ['End-to-end', 'iOS', 'Marketplace'],
     color: '#2a1f0a',
