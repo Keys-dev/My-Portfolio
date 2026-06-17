@@ -218,8 +218,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(200, 255, 101, 0.04)",
   },
   headlineRow: {
-    flexDirection: "row",
-    alignItems: "flex-end",
+    flexDirection: width > 768 ? "row" : "column",
+    alignItems: width > 768 ? "flex-end" : "flex-start",
     justifyContent: "space-between",
     marginBottom: 56,
     gap: 24,

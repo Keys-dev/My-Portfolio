@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Animated, Dimensions, FlatList, Image, Modal, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { Animated, Dimensions, Linking, FlatList, Image, Modal, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PROJECTS, ProjectData } from "../constants/projects";
 
@@ -124,6 +124,15 @@ export default function ProjectScreen() {
                 <Text style={styles.metaItem}>{project.category}</Text>
                 <Text style={styles.metaDot}>·</Text>
                 <Text style={styles.metaItem}>{project.year}</Text>
+                
+                {project.link && (
+                  <Text
+                    style={styles.linkText}
+                    onPress={() => Linking.openURL(project.link!)}
+                  >
+                    View Live Project →
+                  </Text>
+                )}
               </View>
             </View>
           </SafeAreaView>
@@ -439,6 +448,16 @@ const styles = StyleSheet.create({
     lineHeight: 36,
   },
   
+
+
+  linkText: {
+  fontFamily: "monospace",
+  fontSize: 13,
+  color: "#c8ff65",
+  textDecorationLine: "underline",
+  letterSpacing: 0.5,
+},
+
 
   metaRow: { flexDirection: "row", alignItems: "center", gap: 12, marginTop: 16 },
   metaItem: { fontFamily: "monospace", fontSize: 11, color: "rgba(255,255,255,0.4)", letterSpacing: 1 },
