@@ -1,12 +1,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Animated, Dimensions, Linking, FlatList, Image, Modal, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { Animated, Dimensions, Linking, FlatList, Image, Modal, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PROJECTS, ProjectData } from "../constants/projects";
 
-const { width, height } = Dimensions.get("window");
 
 export default function ProjectScreen() {
+  const { width, height } = useWindowDimensions();
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const project: ProjectData = route.params?.project;
@@ -110,7 +110,8 @@ export default function ProjectScreen() {
         {/* Hero */}
         <Animated.View
           style={[
-            styles.hero,
+            styles.hero, 
+            {height: height * 0.55},
             { backgroundColor: project.color },
             { opacity: headerOpacity, transform: [{ translateY: headerY }] },
           ]}
@@ -119,7 +120,10 @@ export default function ProjectScreen() {
           <SafeAreaView edges={["top"]}>
             <View style={{ paddingHorizontal: 32, paddingBottom: 48, justifyContent: "flex-end", height: height * 0.55 }}>
               <Text style={styles.projectIndex}>0{project.index}</Text>
-              <Text style={styles.projectTitle}>{project.title}</Text>
+              <Text style={[styles.projectTitle,
+                {lineHeight: Math.min(width * 0.15, 88)},
+                {fontSize: Math.min(width * 0.14, 80),} 
+                  ]}>{project.title}</Text>
               <View style={styles.metaRow}>
                 <Text style={styles.metaItem}>{project.category}</Text>
                 <Text style={styles.metaDot}>·</Text>
@@ -172,16 +176,25 @@ export default function ProjectScreen() {
                     // Web: show one image at a time with opacity, add arrow buttons
                     <View style={{ width: cardWidth, height: Platform.OS === 'web' ? 600 : 380 }}>
                       {screens.map((src: any, i: number) => (
-                        <Image
+                        <TouchableOpacity
                           key={i}
-                          source={src}
+                          activeOpacity={0.9}
+                          onPress={() => {
+                            setModalImage(src);
+                            setModalVisible(true);
+                          }}
                           style={[
                             StyleSheet.absoluteFill,
                             { opacity: i === activeSlide ? 1 : 0 }
                           ]}
-                          resizeMode="cover"
-                        />
-                      ))}
+                        >
+                          <Image
+                            source={src}
+                            style={StyleSheet.absoluteFill}
+                            resizeMode="contain"
+                          />
+                        </TouchableOpacity>
+))}
 
                       {/* Left arrow */}
                       {screens.length > 1 && (
@@ -242,7 +255,7 @@ export default function ProjectScreen() {
                           <Image
                             source={item}
                             style={{ width: cardWidth, height: Platform.OS === 'web' ? 600 : 380 }}
-                            resizeMode="cover"
+                            resizeMode="contain"
                           />
                         </TouchableOpacity>
                       )}
@@ -324,10 +337,14 @@ export default function ProjectScreen() {
           {modalImage && (
             <Image
               source={modalImage}
-              style={styles.modalImage}
+              style={{
+                width: '90%',
+                height: '85%',
+                maxWidth: 1200,
+              }}
               resizeMode="contain"
             />
-          )}
+)}
         </View>
       </Modal>
 
@@ -366,7 +383,9 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     textTransform: "uppercase",
   },
-  hero: { height: height * 0.55 },
+  hero: {
+    
+  },
   projectIndex: {
     fontFamily: "monospace",
     fontSize: 12,
@@ -376,11 +395,9 @@ const styles = StyleSheet.create({
   },
   projectTitle: {
     fontFamily: "serif",
-    fontSize: Math.min(width * 0.14, 80),
     color: "#f0ede6",
     fontWeight: "300",
-    letterSpacing: -2,
-    lineHeight: Math.min(width * 0.15, 88),
+    letterSpacing: -2
   },
 
 
@@ -406,10 +423,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
   },
-  modalImage: {
-    width: width,
-    height: height * 0.8,
-  },
+  modalImage: {},
 
 
   arrowLeft: {

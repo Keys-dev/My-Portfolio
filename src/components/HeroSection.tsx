@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { Animated, Dimensions, Easing, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Animated, Dimensions, Easing, Linking, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const { width, height } = Dimensions.get("window");
 
 interface HeroProps {
   onScrollHint?: () => void;
 }
+
 
 const LINES = ["Frontend Developer", "Mobile Developer"];
 
@@ -16,6 +16,7 @@ const RESUME_URL = "https://tvsqevrjvnvpeifgkail.supabase.co/storage/v1/object/p
 
 export default function HeroSection({ onScrollHint }: HeroProps) {
   const insets = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
   const lineAnims = LINES.map(() => ({
     opacity: useRef(new Animated.Value(0)).current,
     y: useRef(new Animated.Value(40)).current,
@@ -111,21 +112,36 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
   }, []);
 
   return (
-    <View style={styles.hero}>
+    <View style={[styles.hero, {
+      height: height,
+    }]}>
       {/* Background noise texture overlay */}
       <View style={styles.noise} />
 
       {/* Ambient glow */}
-      <View style={styles.glow} />
+      <View style={[styles.glow, {
+        width: width * 0.5,
+        height: width * 0.5,
+        borderRadius: width * 0.25,
+      }]} />
 
       {/* Headline row — title on the left, resume button on the right */}
-      <View style={styles.headlineRow}>
+      <View style={[styles.headlineRow, {
+        flexDirection: width > 768 ? "row" : "column",
+        alignItems: width > 768 ? "flex-end" : "flex-start",
+        justifyContent: "space-between",
+        }
+      ]}>
         <View style={styles.headlineWrap}>
           {LINES.map((line, i) => (
             <View key={i} style={styles.lineClip}>
               <Animated.Text
                 style={[
                   styles.headline,
+                  {
+                    fontSize: Math.min(width * 0.13, 96),
+                    lineHeight: Math.min(width * 0.14, 105),
+                  },
                   {
                     opacity: lineAnims[i].opacity,
                     transform: [{ translateY: lineAnims[i].y }],
@@ -141,6 +157,10 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
         <Animated.View
           style={[
             styles.resumeWrap,
+            {
+              marginBottom: width > 768 ? 12 : 0,
+              marginTop: width > 768 ? 0 : 8,
+            },
             { opacity: resumeOpacity, transform: [{ translateY: resumeY }] },
           ]}
         >
@@ -197,7 +217,6 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
 
 const styles = StyleSheet.create({
   hero: {
-    height: height,
     backgroundColor: "#0a0a0a",
     justifyContent: "center",
     paddingHorizontal: 32,
@@ -210,7 +229,6 @@ const styles = StyleSheet.create({
   },
   glow: {
     position: "absolute",
-    top: height * 0.1,
     right: -100,
     width: 500,
     height: 500,
@@ -218,8 +236,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(200, 255, 101, 0.04)",
   },
   headlineRow: {
-    flexDirection: width > 768 ? "row" : "column",
-    alignItems: width > 768 ? "flex-end" : "flex-start",
     justifyContent: "space-between",
     marginBottom: 56,
     gap: 24,
@@ -231,11 +247,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   headline: {
-    fontSize: Math.min(width * 0.13, 96),
     color: "#f0ede6",
     fontFamily: "serif",
     fontWeight: "300",
-    lineHeight: Math.min(width * 0.14, 105),
     letterSpacing: -3,
   },
   resumeWrap: {

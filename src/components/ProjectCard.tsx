@@ -76,9 +76,10 @@ export default function ProjectCard({
             {project.image ? (
               <Image
                 source={project.image}
-                style={[
-                  // StyleSheet.absoluteFill,
-                ]}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
                 resizeMode="cover"
               />
             ) : (
