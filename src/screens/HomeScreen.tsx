@@ -9,9 +9,10 @@ import ScrollReveal, { ScrollRevealHandle } from "../components/ScrollReveal";
 import { PROJECTS } from "../constants/projects";
 
 const { width, height: VIEWPORT_H } = Dimensions.get("window");
+let hasPreloadedOnce = false;
 
 export default function HomeScreen() {
-  const [preloaderDone, setPreloaderDone] = useState(false);
+  const [preloaderDone, setPreloaderDone] = useState(hasPreloadedOnce);
   const scrollY = useRef(new Animated.Value(0)).current;
   const scrollYRaw = useRef(0);
   const lastScrollY = useRef(0);
@@ -66,6 +67,7 @@ export default function HomeScreen() {
       {!preloaderDone && (
         <Preloader
           onComplete={() => {
+            hasPreloadedOnce = true;
             setPreloaderDone(true);
             setTimeout(() => checkAllReveal(0), 300);
           }}
@@ -79,7 +81,7 @@ export default function HomeScreen() {
           <Animated.ScrollView
             style={styles.scroll}
             onScroll={handleScroll}
-            scrollEventThrottle={16}y
+            scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}
           >
             {/* Hero */}

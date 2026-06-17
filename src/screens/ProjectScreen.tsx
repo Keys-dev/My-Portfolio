@@ -256,7 +256,7 @@ export default function ProjectScreen() {
             </View>
 
             {/* Flow + System */}
-            <View style={styles.imageRow}>
+            {/* <View style={styles.imageRow}>
               <View style={[styles.imageSmall, { backgroundColor: project.color }]}>
                 {project.flowImage ? (
                   <Image
@@ -279,7 +279,7 @@ export default function ProjectScreen() {
                   <Text style={styles.imagePlaceholderText}>System</Text>
                 )}
               </View>
-            </View>
+            </View> */}
 
           </View>
 

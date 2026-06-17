@@ -28,11 +28,11 @@ export const PROJECTS: ProjectData[] = [
     require('../../assets/images/vitalsyncscr1.png'),
     require('../../assets/images/vitalsyncscr2.png'),
     require('../../assets/images/vitalsyncscr3.png'),
-  ],
-  flowImage: null,
-  systemImage: null,
+    ],
+    flowImage: null,
+    systemImage: null,
 
-    description: 'A comprehensive IoT-based health monitoring platform that bridges the gap between patients and clinics through real-time data streaming and predictive analytics.',
+    description: `A bridge between patients and the people caring for them. Pulls in real-time vitals from connected sensors, flags anything that needs attention, and gives doctors and family members a shared, live view of what's going on — built to make remote monitoring feel less like a guessing game.`,
   },
   {
     id: '2',
@@ -50,7 +50,7 @@ export const PROJECTS: ProjectData[] = [
   ],
   flowImage: null,
   systemImage: null,
-  description: 'A sleek, modern Pokédex built with React Native and Expo. Browse the first generation of Pokémon, search by name, and tap any card to view detailed stats, types, and sprites — all powered by the PokéAPI.',
+  description: `A sleek, modern Pokédex built with React Native and Expo. Browse the first generation of Pokémon, search by name, and tap any card to view detailed stats, types, and sprites — all powered by the PokéAPI.`,
   },
   {
     id: '3',
@@ -68,7 +68,7 @@ export const PROJECTS: ProjectData[] = [
   ],
   flowImage: null,
   systemImage: null,
-    description: 'A global video-on-demand streaming service optimized for low-latency delivery across various screen sizes, from smart TVs to mobile devices.',
+    description: `A task and reminder manager that actually nags you the right amount — organizes what's urgent, what's overdue, and what can wait, so nothing slips through because it got buried in a list.`,
   },
   {
     id: '4',
@@ -86,6 +86,6 @@ export const PROJECTS: ProjectData[] = [
   ],
   flowImage: null,
   systemImage: null,
-    description: 'A high-speed food delivery marketplace focused on local artisanal vendors, featuring real-time tracking and an intelligent recommendation engine.',
+    description: `A digital home for your physical filing system. Track where every document, folder, and box actually lives, search across locations and notes in seconds, and stop relying on memory (or sticky notes) to find things.`,
   },
 ];
