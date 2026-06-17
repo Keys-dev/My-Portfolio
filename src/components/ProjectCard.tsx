@@ -74,9 +74,11 @@ export default function ProjectCard({
           {/* Image panel */}
           <View style={[styles.imageWrap, { backgroundColor: project.color }]}>
             {project.image ? (
-              <Image 
-                source={project.image} 
-                style={StyleSheet.absoluteFill} 
+              <Image
+                source={project.image}
+                style={[
+                  // StyleSheet.absoluteFill,
+                ]}
                 resizeMode="cover"
               />
             ) : (
@@ -136,11 +138,11 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     width: width > 768 ? "45%" : "100%",
-    height: width > 768 ? 280 : 220,
+    aspectRatio: 1365 / 681,  // ≈ 2:1
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   imagePlaceholder: {
     width: 80,

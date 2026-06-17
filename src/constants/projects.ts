@@ -3,13 +3,16 @@ export interface ProjectData {
   title: string;
   category: string;
   year: string;
-  tags: string[];
   color: string;
-  image?: any; // For require() expressions
   index: number;
+  image: any;
+  screensImages?: any[];  // array of screenshots for carousel
+  flowImage?: any;        // flow diagram
+  systemImage?: any;      // system architecture diagram
   description: string;
-  role: string;
+  tags: string[];
 }
+
 
 export const PROJECTS: ProjectData[] = [
   {
@@ -20,21 +23,34 @@ export const PROJECTS: ProjectData[] = [
     tags: ['IoT', 'Web', 'Health'],
     color: '#1a1f3a',
     index: 1,
-    image: null, // TODO: Add project image (e.g., require('../../assets/images/vitalsync.jpg'))
+    image: require('../../assets/images/vitalsync1.png'),         // hero image
+    screensImages: [
+    require('../../assets/images/vitalsyncscr1.png'),
+    require('../../assets/images/vitalsyncscr2.png'),
+    require('../../assets/images/vitalsyncscr3.png'),
+  ],
+  flowImage: null,
+  systemImage: null,
+
     description: 'A comprehensive IoT-based health monitoring platform that bridges the gap between patients and clinics through real-time data streaming and predictive analytics.',
-    role: 'Lead Fullstack Developer — Architected the real-time data ingestion engine and designed the clinical dashboard for medical practitioners.',
   },
   {
     id: '2',
     title: 'Pokedex',
-    category: '',
+    category: 'Thesarus',
     year: '2024',
     tags: ['UX Research', 'Android/IOS', 'Thesarus'],
     color: '#1a2e1a',
     index: 2,
-    image: null, // TODO: Add project image
-    description: 'A mobile-first fitness ecosystem integrated with wearable technology to provide users with deep insights into their training performance and recovery metrics.',
-    role: 'Mobile Lead — Focused on Bluetooth LE integration for wearable devices and implementing high-performance biometric visualization charts.',
+    image: require('../../assets/images/pokedex1.png'),         // hero image
+    screensImages: [
+    require('../../assets/images/pokedexscr1.png'),
+    require('../../assets/images/pokedexscr2.png'),
+    require('../../assets/images/pokedexscr3.png'),
+  ],
+  flowImage: null,
+  systemImage: null,
+  description: 'A sleek, modern Pokédex built with React Native and Expo. Browse the first generation of Pokémon, search by name, and tap any card to view detailed stats, types, and sprites — all powered by the PokéAPI.',
   },
   {
     id: '3',
@@ -44,20 +60,32 @@ export const PROJECTS: ProjectData[] = [
     tags: ['Design System', 'Web', 'TV'],
     color: '#2e1a1a',
     index: 3,
-    image: null, // TODO: Add project image
+    image: require('../../assets/images/tempo1.png'),         // hero image
+    screensImages: [
+    require('../../assets/images/temposcr1.png'),
+    require('../../assets/images/temposcr2.png'),
+    require('../../assets/images/temposcr3.png'),
+  ],
+  flowImage: null,
+  systemImage: null,
     description: 'A global video-on-demand streaming service optimized for low-latency delivery across various screen sizes, from smart TVs to mobile devices.',
-    role: 'Frontend Architect — Developed the core design system and optimized the custom video player for seamless performance across multiple environments.',
   },
   {
     id: '4',
-    title: 'ArchivX',
+    title: 'ArchiveX',
     category: 'Record Tracking',
-    year: '2023',
-    tags: ['End-to-end', 'iOS', 'Marketplace'],
+    year: '2025',
+    tags: [],
     color: '#2a1f0a',
     index: 4,
-    image: null, // TODO: Add project image
+    image: require('../../assets/images/archivex1.png'),         // hero image
+    screensImages: [
+    require('../../assets/images/archivexscr1.png'),
+    require('../../assets/images/archivexscr2.png'),
+    require('../../assets/images/archivexscr3.png'),
+  ],
+  flowImage: null,
+  systemImage: null,
     description: 'A high-speed food delivery marketplace focused on local artisanal vendors, featuring real-time tracking and an intelligent recommendation engine.',
-    role: 'Product Engineer — Designed the marketplace architecture and implemented the real-time order tracking system using WebSocket technology.',
   },
 ];

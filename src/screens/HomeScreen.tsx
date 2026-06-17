@@ -1,15 +1,5 @@
 import React, { useRef, useState } from "react";
-import {
-  Animated,
-  Dimensions,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { Animated, Dimensions, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, View, TouchableOpacity, Linking,} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeroSection from "../components/HeroSection";
 import NavBar from "../components/NavBar";
@@ -89,7 +79,7 @@ export default function HomeScreen() {
           <Animated.ScrollView
             style={styles.scroll}
             onScroll={handleScroll}
-            scrollEventThrottle={16}
+            scrollEventThrottle={16}y
             showsVerticalScrollIndicator={false}
           >
             {/* Hero */}
