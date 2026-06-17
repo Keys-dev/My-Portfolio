@@ -4,7 +4,7 @@
     "slug": "my-portfolio",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/Asset 20.png",
     "scheme": "myportfolio",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0a0a0a",
@@ -20,7 +20,8 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "single"
+      "output": "single",
+      "favicon": "./assets/images/Asset 20.png"
     },
     "plugins": [
       [

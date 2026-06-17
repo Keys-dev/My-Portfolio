@@ -1,12 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import {
-  Animated,
-  Dimensions,
-  Easing,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
+import { Animated, Dimensions, Easing, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -17,6 +10,9 @@ interface HeroProps {
 }
 
 const LINES = ["Frontend Developer", "Mobile Developer"];
+
+// Path to your resume PDF — drop the file at assets/resume.pdf
+const RESUME_URL = "https://tvsqevrjvnvpeifgkail.supabase.co/storage/v1/object/public/public-assets/Muhammed_Agbaje_Resume.pdf";
 
 export default function HeroSection({ onScrollHint }: HeroProps) {
   const insets = useSafeAreaInsets();
@@ -29,6 +25,13 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
   const subY = useRef(new Animated.Value(20)).current;
   const scrollOpacity = useRef(new Animated.Value(0)).current;
   const scrollY = useRef(new Animated.Value(0)).current;
+  const resumeOpacity = useRef(new Animated.Value(0)).current;
+  const resumeY = useRef(new Animated.Value(20)).current;
+
+  const handleResumePress = () => {
+    // Opens the resume in a new browser tab (web) / external viewer (mobile)
+    Linking.openURL(RESUME_URL).catch(() => null);
+  };
 
   useEffect(() => {
     const delay = 1800; // after preloader (preloader = ~1950ms total)
@@ -67,6 +70,21 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
       }),
     ]).start();
 
+    Animated.parallel([
+      Animated.timing(resumeOpacity, {
+        toValue: 1,
+        duration: 700,
+        delay: delay + 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(resumeY, {
+        toValue: 0,
+        duration: 700,
+        delay: delay + 300,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
     // Scroll indicator bounce loop
     setTimeout(() => {
       Animated.loop(
@@ -100,23 +118,41 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
       {/* Ambient glow */}
       <View style={styles.glow} />
 
-      {/* Main headline */}
-      <View style={styles.headlineWrap}>
-        {LINES.map((line, i) => (
-          <View key={i} style={styles.lineClip}>
-            <Animated.Text
-              style={[
-                styles.headline,
-                {
-                  opacity: lineAnims[i].opacity,
-                  transform: [{ translateY: lineAnims[i].y }],
-                },
-              ]}
-            >
-              {line}
-            </Animated.Text>
-          </View>
-        ))}
+      {/* Headline row — title on the left, resume button on the right */}
+      <View style={styles.headlineRow}>
+        <View style={styles.headlineWrap}>
+          {LINES.map((line, i) => (
+            <View key={i} style={styles.lineClip}>
+              <Animated.Text
+                style={[
+                  styles.headline,
+                  {
+                    opacity: lineAnims[i].opacity,
+                    transform: [{ translateY: lineAnims[i].y }],
+                  },
+                ]}
+              >
+                {line}
+              </Animated.Text>
+            </View>
+          ))}
+        </View>
+
+        <Animated.View
+          style={[
+            styles.resumeWrap,
+            { opacity: resumeOpacity, transform: [{ translateY: resumeY }] },
+          ]}
+        >
+          <TouchableOpacity
+            style={styles.resumeBtn}
+            onPress={handleResumePress}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.resumeBtnText}>Download Resume</Text>
+            <View style={styles.resumeArrow} />
+          </TouchableOpacity>
+        </Animated.View>
       </View>
 
       {/* Sub info row */}
@@ -138,7 +174,7 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
         <View style={styles.divider} />
         <View style={styles.subRight}>
           <Text style={styles.subLabel}>Domains</Text>
-          <Text style={styles.subValue}>Fintech · Health · E-commerce</Text>
+          <Text style={styles.subValue}> Health · Productivity · Tools </Text>
         </View>
       </Animated.View>
 
@@ -181,8 +217,15 @@ const styles = StyleSheet.create({
     borderRadius: 250,
     backgroundColor: "rgba(200, 255, 101, 0.04)",
   },
-  headlineWrap: {
+  headlineRow: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
     marginBottom: 56,
+    gap: 24,
+  },
+  headlineWrap: {
+    flexShrink: 1,
   },
   lineClip: {
     overflow: "hidden",
@@ -194,6 +237,35 @@ const styles = StyleSheet.create({
     fontWeight: "300",
     lineHeight: Math.min(width * 0.14, 105),
     letterSpacing: -3,
+  },
+  resumeWrap: {
+    marginBottom: 12,
+  },
+  resumeBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    borderWidth: 1,
+    borderColor: "rgba(200, 255, 101, 0.3)",
+    backgroundColor: "rgba(200, 255, 101, 0.06)",
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 100,
+  },
+  resumeBtnText: {
+    fontFamily: "monospace",
+    fontSize: 11,
+    color: "#c8ff65",
+    letterSpacing: 1.5,
+    textTransform: "uppercase",
+  },
+  resumeArrow: {
+    width: 8,
+    height: 8,
+    borderTopWidth: 1.5,
+    borderRightWidth: 1.5,
+    borderColor: "#c8ff65",
+    transform: [{ rotate: "45deg" }],
   },
   subRow: {
     flexDirection: "row",

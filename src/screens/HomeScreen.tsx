@@ -127,7 +127,7 @@ export default function HomeScreen() {
                   Turning complex problems into elegant mobile & web solutions.
                 </Text>
                 <Text style={styles.aboutBody}>
-                  I'm a Fullstack Developer with a passion for building
+                  I'm a Frontend and Software Developer with a passion for building
                   high-performance, user-centric applications that make a
                   difference.
                 </Text>

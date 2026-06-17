@@ -39,7 +39,7 @@ export const PROJECTS: ProjectData[] = [
     title: 'Pokedex',
     category: 'Thesarus',
     year: '2024',
-    tags: ['UX Research', 'Android/IOS', 'Thesarus'],
+    tags: ['Web', 'Productivity', 'Behavioral Design'],
     color: '#1a2e1a',
     index: 2,
     image: require('../../assets/images/pokedex1.png'),         // hero image
@@ -57,7 +57,7 @@ export const PROJECTS: ProjectData[] = [
     title: 'Tempo',
     category: 'Reminder',
     year: '2024',
-    tags: ['Design System', 'Web', 'TV'],
+    tags: ['Web', 'UI/UX', 'Productivity'],
     color: '#2e1a1a',
     index: 3,
     image: require('../../assets/images/tempo1.png'),         // hero image
@@ -75,7 +75,7 @@ export const PROJECTS: ProjectData[] = [
     title: 'ArchiveX',
     category: 'Record Tracking',
     year: '2025',
-    tags: [],
+    tags: ['Mobile', 'API Integration', 'UI/UX'],
     color: '#2a1f0a',
     index: 4,
     image: require('../../assets/images/archivex1.png'),         // hero image

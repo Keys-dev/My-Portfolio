@@ -20,8 +20,8 @@ const LINKS = [
     value: "muhammadagbaje85@gmail.com",
     url: "mailto:muhammadagbaje85@gmail.com",
   },
-  { label: "LinkedIn", value: "LinkedIn", url: "https://" },
-  { label: "GitHub", value: "GitHub", url: "https://" },
+  { label: "LinkedIn", value: "LinkedIn", url: "www.linkedin.com/in/muhammed-agbaje-717485255" },
+  { label: "GitHub", value: "GitHub", url: "https://github.com/Keys-dev" },
 ];
 
 export default function ContactScreen() {
