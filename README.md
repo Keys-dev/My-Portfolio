@@ -1,50 +1,44 @@
-# Welcome to your Expo app 👋
+# My Portfolio
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+My personal developer portfolio — a cross-platform app (web + mobile, powered by Expo) showcasing the projects I've built, the problems they solve, and how they were built.
 
-## Get started
+**Live demo:** [my-portfolio-mocha-mu-64.vercel.app](https://my-portfolio-mocha-mu-64.vercel.app)
 
-1. Install dependencies
+## What's Inside
 
-   ```bash
-   npm install
-   ```
+- **Home screen** — an animated landing experience with a preloader and scroll-revealed sections introducing who I am and what I do
+- **Project showcase** — a scrollable list of project cards, each linking through to a dedicated detail screen
+- **Project detail screens** — per-project breakdowns including an image carousel of app screens, a user-flow diagram, and a system-architecture diagram
+- **About & contact sections** — a short bio and a direct way to reach me
 
-2. Start the app
+## Tech Stack
 
-   ```bash
-   npx expo start
-   ```
+- **Framework:** React Native + [Expo](https://expo.dev/)
+- **Navigation:** React Navigation
+- **Animation:** React Native's `Animated` API for scroll-reveal effects, smart nav-bar hide/show, and carousel transitions
+- **Language:** TypeScript
+- **Deployment:** Vercel (web export via Expo)
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Getting Started
 
 ```bash
-npm run reset-project
+# Install dependencies
+npm install
+
+# Start the app
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+From the Expo CLI output you can open the app in a development build, an Android/iOS simulator, [Expo Go](https://expo.dev/go), or directly in a web browser.
 
-## Learn more
+## Notable Implementation Details
 
-To learn more about developing your project with Expo, look at the following resources:
+- Project images and the loading screen run only on a true page reload, not on every in-app navigation — handled via a module-level flag rather than component state, since component state resets on every screen mount but a module stays loaded in memory until the JS bundle itself reloads.
+- The project-screen image carousel auto-advances and supports swipe gestures on mobile; on web (where swipe isn't available) it falls back to clickable arrow controls, with platform-specific rendering logic (`Platform.OS === 'web'`) throughout.
+- Images can be tapped to expand fullscreen via a modal overlay.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Roadmap
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [ ] Add real project screenshots and architecture diagrams for each case study
+- [ ] Dark/light theme toggle
+- [ ] Blog/writing section
