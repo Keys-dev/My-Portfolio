@@ -33,7 +33,7 @@ export const PROJECTS: ProjectData[] = [
     flowImage: null,
     systemImage: null,
 
-    link: "https://vitalsync.vercel.app/",
+    link: "vital-sync-iot.vercel.app",
 
     description: `A bridge between patients and the people caring for them. Pulls in real-time vitals from connected sensors, flags anything that needs attention, and gives doctors and family members a shared, live view of what's going on — built to make remote monitoring feel less like a guessing game.`,
   },
@@ -42,7 +42,7 @@ export const PROJECTS: ProjectData[] = [
     title: 'Pokedex',
     category: 'Thesarus',
     year: '2024',
-    tags: ['Web', 'Productivity', 'Behavioral Design'],
+    tags: ['Mobile', 'API Integration', 'UI/UX'],
     color: '#1a2e1a',
     index: 2,
     image: require('../../assets/images/pokedex1.png'),         // hero image
@@ -54,7 +54,7 @@ export const PROJECTS: ProjectData[] = [
   flowImage: null,
   systemImage: null,
 
-  link: "https://vitalsync.vercel.app/",
+  link: "pok-dex-blue.vercel.app",
 
   description: `A sleek, modern Pokédex built with React Native and Expo. Browse the first generation of Pokémon, search by name, and tap any card to view detailed stats, types, and sprites — all powered by the PokéAPI.`,
   },
@@ -63,7 +63,7 @@ export const PROJECTS: ProjectData[] = [
     title: 'Tempo',
     category: 'Reminder',
     year: '2024',
-    tags: ['Web', 'UI/UX', 'Productivity'],
+    tags: ['Web', 'Productivity', 'Behavioral Design'],
     color: '#2e1a1a',
     index: 3,
     image: require('../../assets/images/tempo1.png'),         // hero image
@@ -75,7 +75,7 @@ export const PROJECTS: ProjectData[] = [
     flowImage: null,
     systemImage: null,
 
-    link: "https://vitalsync.vercel.app/",
+    link: "tempo-vo.vercel.app",
     description: `A task and reminder manager that actually nags you the right amount — organizes what's urgent, what's overdue, and what can wait, so nothing slips through because it got buried in a list.`,
   },
   {
@@ -83,7 +83,7 @@ export const PROJECTS: ProjectData[] = [
     title: 'ArchiveX',
     category: 'Record Tracking',
     year: '2025',
-    tags: ['Mobile', 'API Integration', 'UI/UX'],
+    tags: [' Web', 'UI/UX', 'Productivity'],
     color: '#2a1f0a',
     index: 4,
     image: require('../../assets/images/archivex1.png'),         // hero image
@@ -95,8 +95,8 @@ export const PROJECTS: ProjectData[] = [
     flowImage: null,
     systemImage: null,
 
-    link: "https://vitalsync.vercel.app/",
-    
+    link: "archivex-vo.vercel.app",
+
     description: `A digital home for your physical filing system. Track where every document, folder, and box actually lives, search across locations and notes in seconds, and stop relying on memory (or sticky notes) to find things.`,
   },
 ];

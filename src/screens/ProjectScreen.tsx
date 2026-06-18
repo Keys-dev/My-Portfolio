@@ -167,34 +167,28 @@ export default function ProjectScreen() {
 
             {/* Screens / UI — Carousel */}
             <View
-              style={[styles.imageBlock, { backgroundColor: project.color, height: Platform.OS === 'web' ? 600 : 380 }]}
+              style={[styles.imageBlock, { backgroundColor: project.color, aspectRatio: 16 / 9 }]}
               onLayout={(e) => setCardWidth(e.nativeEvent.layout.width)}
-            >
+              >
               {screens.length > 0 && cardWidth > 0 ? (
                 <>
                   {Platform.OS === 'web' ? (
                     // Web: show one image at a time with opacity, add arrow buttons
-                    <View style={{ width: cardWidth, height: Platform.OS === 'web' ? 600 : 380 }}>
-                      {screens.map((src: any, i: number) => (
-                        <TouchableOpacity
-                          key={i}
-                          activeOpacity={0.9}
-                          onPress={() => {
-                            setModalImage(src);
-                            setModalVisible(true);
-                          }}
-                          style={[
-                            StyleSheet.absoluteFill,
-                            { opacity: i === activeSlide ? 1 : 0 }
-                          ]}
-                        >
-                          <Image
-                            source={src}
-                            style={StyleSheet.absoluteFill}
-                            resizeMode="contain"
-                          />
-                        </TouchableOpacity>
-))}
+                    <View style={{ width: cardWidth, height: '100%' }}>
+                      <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={() => {
+                          setModalImage(screens[activeSlide]);
+                          setModalVisible(true);
+                        }}
+                        style={StyleSheet.absoluteFill}
+                      >
+                        <Image
+                          source={screens[activeSlide]}
+                          style={StyleSheet.absoluteFill}
+                          resizeMode="contain"
+                        />
+                      </TouchableOpacity>
 
                       {/* Left arrow */}
                       {screens.length > 1 && (
@@ -254,7 +248,7 @@ export default function ProjectScreen() {
                         >
                           <Image
                             source={item}
-                            style={{ width: cardWidth, height: Platform.OS === 'web' ? 600 : 380 }}
+                            style={{ width: cardWidth, height: '100%' }}
                             resizeMode="contain"
                           />
                         </TouchableOpacity>
