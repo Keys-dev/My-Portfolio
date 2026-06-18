@@ -33,7 +33,7 @@ export const PROJECTS: ProjectData[] = [
     flowImage: null,
     systemImage: null,
 
-    link: "vital-sync-iot.vercel.app",
+    link: "https://vital-sync-iot.vercel.app",
 
     description: `A bridge between patients and the people caring for them. Pulls in real-time vitals from connected sensors, flags anything that needs attention, and gives doctors and family members a shared, live view of what's going on — built to make remote monitoring feel less like a guessing game.`,
   },
@@ -54,7 +54,7 @@ export const PROJECTS: ProjectData[] = [
   flowImage: null,
   systemImage: null,
 
-  link: "pok-dex-blue.vercel.app",
+  link: "https://pok-dex-blue.vercel.app",
 
   description: `A sleek, modern Pokédex built with React Native and Expo. Browse the first generation of Pokémon, search by name, and tap any card to view detailed stats, types, and sprites — all powered by the PokéAPI.`,
   },
@@ -75,7 +75,7 @@ export const PROJECTS: ProjectData[] = [
     flowImage: null,
     systemImage: null,
 
-    link: "tempo-vo.vercel.app",
+    link: "https://tempo-vo.vercel.app",
     description: `A task and reminder manager that actually nags you the right amount — organizes what's urgent, what's overdue, and what can wait, so nothing slips through because it got buried in a list.`,
   },
   {
@@ -95,7 +95,7 @@ export const PROJECTS: ProjectData[] = [
     flowImage: null,
     systemImage: null,
 
-    link: "archivex-vo.vercel.app",
+    link: "https://archivex-vo.vercel.app",
 
     description: `A digital home for your physical filing system. Track where every document, folder, and box actually lives, search across locations and notes in seconds, and stop relying on memory (or sticky notes) to find things.`,
   },

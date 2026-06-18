@@ -24,33 +24,30 @@ export default function ProjectScreen() {
   const [cardWidth, setCardWidth] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalImage, setModalImage] = useState<any>(null);
-  const carouselRef = useRef<ScrollView>(null);
   const [activeSlide, setActiveSlide] = useState(0);
-  const carouselIndex = useRef(0);
   const screens: any[] = project.screensImages ?? (project.image ? [project.image] : []);
 
-  // Auto-scroll carousel every 3 seconds
   // Update auto-scroll to use cardWidth
-  useEffect(() => {
-    if (screens.length <= 1 || cardWidth === 0) return;
-    const interval = setInterval(() => {
-      const next = (carouselIndex.current + 1) % screens.length;
-      if (Platform.OS === 'web') {
-        setActiveSlide(next);
-      } else {
-        (carouselRef.current as any)?.scrollToIndex({ index: next, animated: true });
-      }
-      carouselIndex.current = next;
-      setActiveSlide(next);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [screens.length, cardWidth]);
+  // useEffect(() => {
+  //   if (screens.length <= 1 || cardWidth === 0) return;
+  //   const interval = setInterval(() => {
+  //     const next = (carouselIndex.current + 1) % screens.length;
+  //     if (Platform.OS === 'web') {
+  //       setActiveSlide(next);
+  //     } else {
+  //       (carouselRef.current as any)?.scrollToIndex({ index: next, animated: true });
+  //     }
+  //     carouselIndex.current = next;
+  //     setActiveSlide(next);
+  //   }, 6000);
+  //   return () => clearInterval(interval);
+  // }, [screens.length, cardWidth]);
 
-  const handleCarouselScroll = (e: any) => {
-    const index = Math.round(e.nativeEvent.contentOffset.x / width);
-    carouselIndex.current = index;
-    setActiveSlide(index);
-  };
+  // const handleCarouselScroll = (e: any) => {
+  //   const index = Math.round(e.nativeEvent.contentOffset.x / width);
+  //   carouselIndex.current = index;
+  //   setActiveSlide(index);
+  // };
 
   const handleScroll = (event: any) => {
     const y = event.nativeEvent.contentOffset.y;
@@ -173,7 +170,7 @@ export default function ProjectScreen() {
               {screens.length > 0 && cardWidth > 0 ? (
                 <>
                   {Platform.OS === 'web' ? (
-                    // Web: show one image at a time with opacity, add arrow buttons
+                    // Web: single image + arrow navigation, tap to expand
                     <View style={{ width: cardWidth, height: '100%' }}>
                       <TouchableOpacity
                         activeOpacity={0.9}
@@ -190,13 +187,11 @@ export default function ProjectScreen() {
                         />
                       </TouchableOpacity>
 
-                      {/* Left arrow */}
                       {screens.length > 1 && (
                         <TouchableOpacity
                           style={styles.arrowLeft}
                           onPress={() => {
                             const prev = (activeSlide - 1 + screens.length) % screens.length;
-                            carouselIndex.current = prev;
                             setActiveSlide(prev);
                           }}
                         >
@@ -204,13 +199,11 @@ export default function ProjectScreen() {
                         </TouchableOpacity>
                       )}
 
-                      {/* Right arrow */}
                       {screens.length > 1 && (
                         <TouchableOpacity
                           style={styles.arrowRight}
                           onPress={() => {
                             const next = (activeSlide + 1) % screens.length;
-                            carouselIndex.current = next;
                             setActiveSlide(next);
                           }}
                         >
@@ -219,9 +212,8 @@ export default function ProjectScreen() {
                       )}
                     </View>
                   ) : (
-                    // Mobile: FlatList with swipe
+                    // Mobile: swipeable FlatList, tap to expand
                     <FlatList
-                      ref={carouselRef as any}
                       data={screens}
                       horizontal
                       pagingEnabled
@@ -230,12 +222,9 @@ export default function ProjectScreen() {
                       snapToAlignment="center"
                       decelerationRate="fast"
                       bounces={false}
-                      scrollEnabled={true}
-                      nestedScrollEnabled={true}
                       keyExtractor={(_, i) => String(i)}
                       onMomentumScrollEnd={(e) => {
                         const index = Math.round(e.nativeEvent.contentOffset.x / cardWidth);
-                        carouselIndex.current = index;
                         setActiveSlide(index);
                       }}
                       renderItem={({ item }) => (
@@ -257,7 +246,6 @@ export default function ProjectScreen() {
                     />
                   )}
 
-                  {/* Dots — both platforms */}
                   {screens.length > 1 && (
                     <View style={styles.dotsRow}>
                       {screens.map((_: any, i: number) => (
@@ -269,7 +257,7 @@ export default function ProjectScreen() {
               ) : (
                 <Text style={styles.imagePlaceholderText}>Screens / UI</Text>
               )}
-            </View>
+              </View>
 
             {/* Flow + System */}
             {/* <View style={styles.imageRow}>
