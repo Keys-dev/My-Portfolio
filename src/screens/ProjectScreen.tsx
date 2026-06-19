@@ -336,7 +336,10 @@ export default function ProjectScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#0a0a0a" },
+  root: { 
+    flex: 1, backgroundColor: "#0a0a0a" 
+    
+  },
   backBtn: {
     marginLeft: 24,
     flexDirection: "row",

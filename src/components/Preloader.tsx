@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Animated, Easing, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Animated, Easing, StyleSheet, Dimensions, useWindowDimensions } from 'react-native';
 
-const { width, height } = Dimensions.get('window');
 
 interface PreloaderProps {
   onComplete: () => void;
 }
 
 export default function Preloader({ onComplete }: PreloaderProps) {
+  const { height } = useWindowDimensions();
   const counter = useRef(new Animated.Value(0)).current;
   const overlayTop = useRef(new Animated.Value(0)).current;
   const overlayBottom = useRef(new Animated.Value(0)).current;
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: height / 2,
+    height: '50%',
     backgroundColor: '#0a0a0a',
     zIndex: 10,
   },

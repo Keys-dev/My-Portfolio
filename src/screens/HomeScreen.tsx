@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Animated, Dimensions, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, View, TouchableOpacity, Linking,} from "react-native";
+import { Animated, Dimensions, Platform, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, View, TouchableOpacity, Linking, useWindowDimensions} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeroSection from "../components/HeroSection";
 import NavBar from "../components/NavBar";
@@ -8,15 +8,28 @@ import ProjectCard from "../components/ProjectCard";
 import ScrollReveal, { ScrollRevealHandle } from "../components/ScrollReveal";
 import { PROJECTS } from "../constants/projects";
 
-const { width, height: VIEWPORT_H } = Dimensions.get("window");
 let hasPreloadedOnce = false;
 
 export default function HomeScreen() {
+  const { width, height: viewportH } = useWindowDimensions(); // 💡 Dynamic viewport monitoring
+
+  const dynamicHeadlineStyle = {
+    fontSize: Math.min(width * 0.09, 64),
+    lineHeight: Math.min(width * 0.1, 72),
+  };
+
+  const dynamicContactHeadlineStyle = {
+    fontSize: Math.min(width * 0.14, 50),
+    lineHeight: Math.min(width * 0.12, 80),
+  };
+
+
   const [preloaderDone, setPreloaderDone] = useState(hasPreloadedOnce);
   const scrollY = useRef(new Animated.Value(0)).current;
   const scrollYRaw = useRef(0);
   const lastScrollY = useRef(0);
   const [navVisible, setNavVisible] = useState(true);
+
 
   // Refs for each scroll-reveal section
   const sectionHeaderRef = useRef<ScrollRevealHandle>(null);
@@ -25,10 +38,10 @@ export default function HomeScreen() {
   const contactRef = useRef<ScrollRevealHandle>(null);
 
   const checkAllReveal = (y: number) => {
-    sectionHeaderRef.current?.checkVisible(y, VIEWPORT_H);
-    projectRefs.current.forEach((r) => r?.checkVisible(y, VIEWPORT_H));
-    aboutRef.current?.checkVisible(y, VIEWPORT_H);
-    contactRef.current?.checkVisible(y, VIEWPORT_H);
+    sectionHeaderRef.current?.checkVisible(y, viewportH);
+    projectRefs.current.forEach((r) => r?.checkVisible(y, viewportH));
+    aboutRef.current?.checkVisible(y, viewportH);
+    contactRef.current?.checkVisible(y, viewportH);
   };
 
   const handleScroll = Animated.event(
@@ -63,7 +76,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.root}>
+    <View style={styles.root }>
       {!preloaderDone && (
         <Preloader
           onComplete={() => {
@@ -123,7 +136,7 @@ export default function HomeScreen() {
             <ScrollReveal ref={aboutRef} delay={100} fromY={30}>
               <View style={styles.aboutTeaser}>
                 <View style={styles.aboutLine} />
-                <Text style={styles.aboutHeadline}>
+                <Text style={[styles.aboutHeadline, dynamicHeadlineStyle]}>
                   Turning complex problems into elegant mobile & web solutions.
                 </Text>
                 <Text style={styles.aboutBody}>
@@ -138,7 +151,7 @@ export default function HomeScreen() {
             <ScrollReveal ref={contactRef} delay={100} fromY={30}>
               <View style={styles.contact}>
                 <Text style={styles.contactEyebrow}>Get in touch</Text>
-                <Text style={styles.contactHeadline}>Let's work together</Text>
+                <Text style={[styles.contactHeadline, dynamicContactHeadlineStyle]}>Let's work together</Text>
                 <TouchableOpacity onPress={handleEmail}>
                   <Text style={styles.contactEmail}>
                     muhammadagbaje85@gmail.com
@@ -157,6 +170,12 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: "#0a0a0a",
+
+    ...Platform.select({
+      web: {
+        minHeight: "100vh" as any,
+      },
+    }),
   },
   scroll: {
     flex: 1,
@@ -204,11 +223,9 @@ const styles = StyleSheet.create({
   },
   aboutHeadline: {
     fontFamily: "serif",
-    fontSize: Math.min(width * 0.09, 64),
     color: "#f0ede6",
     fontWeight: "300",
     letterSpacing: -2,
-    lineHeight: Math.min(width * 0.1, 72),
   },
   aboutBody: {
     fontFamily: "monospace",
@@ -233,11 +250,9 @@ const styles = StyleSheet.create({
   },
   contactHeadline: {
     fontFamily: "serif",
-    fontSize: Math.min(width * 0.14, 50),
     color: "#f0ede6",
     fontWeight: "300",
     letterSpacing: -2,
-    lineHeight: Math.min(width * 0.12, 80),
   },
   contactEmail: {
     fontFamily: "monospace",

@@ -8,11 +8,12 @@ import {
   TouchableOpacity,
   View,
   Linking,
+  useWindowDimensions, 
+  Platform
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import NavBar from "../components/NavBar";
 
-const { width } = Dimensions.get("window");
 
 const SKILLS = [
   { group: "Languages", items: ["JavaScript", "TypeScript", "HTML", "CSS"] },
@@ -25,6 +26,13 @@ const SKILLS = [
 
 export default function AboutScreen() {
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+
+  const responsiveHeadline = {
+    fontSize: Math.min(width * 0.13, 50),
+    lineHeight: Math.min(width * 0.145, 90),
+  };
+
   const opacity = useRef(new Animated.Value(0)).current;
   const y = useRef(new Animated.Value(40)).current;
 
@@ -87,7 +95,7 @@ export default function AboutScreen() {
                 <Text style={styles.metaText}>Nigerian Based</Text>
                 <Text style={styles.metaText}>Software Engineer</Text>
               </View>
-              <Text style={styles.headline}>
+              <Text style={[styles.headline, responsiveHeadline]}>
                 Building digital experiences that feel human.
               </Text>
             </View>
@@ -149,16 +157,21 @@ export default function AboutScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#0a0a0a" },
+  root: { flex: 1, backgroundColor: "#0a0a0a",
+    ...Platform.select({
+      web: {
+        minHeight: "100vh" as any,
+      },
+    }), 
+
+  },
   content: { paddingHorizontal: 32, paddingBottom: 80, gap: 64 },
   headlineBlock: { gap: 24 },
   headline: {
     fontFamily: "serif",
-    fontSize: Math.min(width * 0.13, 50),
     color: "#f0ede6",
     fontWeight: "300",
     letterSpacing: -3,
-    lineHeight: Math.min(width * 0.145, 90),
   },
   headlineMeta: { gap: 6 },
   metaText: {

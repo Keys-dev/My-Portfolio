@@ -8,10 +8,12 @@ import {
   TouchableWithoutFeedback,
   View,
   Image,
+  useWindowDimensions,
+  ViewStyle
 } from "react-native";
 import { ProjectData } from "../constants/projects";
 
-const { width } = Dimensions.get("window");
+// const { width } = Dimensions.get("window");
 
 interface ProjectCardProps {
   project: ProjectData;
@@ -22,6 +24,16 @@ export default function ProjectCard({
   project,
   animDelay = 0,
 }: ProjectCardProps) {
+  const { width } = useWindowDimensions(); //  Add this import & line here
+
+  const dynamicCardStyle: ViewStyle = {
+    flexDirection: width > 768 ? "row" : "column",
+  }
+
+  const dynamicImageWrapStyle: ViewStyle = {
+    width: width > 768 ? "45%" : "100%",
+  }
+
   const navigation = useNavigation<any>();
   const scale = useRef(new Animated.Value(1)).current;
   const hoverLine = useRef(new Animated.Value(0)).current;
@@ -70,9 +82,9 @@ export default function ProjectCard({
         onPressOut={handlePressOut}
         onPress={() => navigation.navigate("Project", { project })}
       >
-        <View style={styles.card}>
+        <View style={[styles.card, dynamicCardStyle]}>
           {/* Image panel */}
-          <View style={[styles.imageWrap, { backgroundColor: project.color }]}>
+          <View style={[styles.imageWrap, dynamicImageWrapStyle, { backgroundColor: project.color }]}>
             {project.image ? (
               <Image
                 source={project.image}
@@ -126,11 +138,11 @@ export default function ProjectCard({
 }
 
 const styles = StyleSheet.create({
+
   cardOuter: {
     marginBottom: 2,
   },
   card: {
-    flexDirection: width > 768 ? "row" : "column",
     backgroundColor: "#111",
     borderRadius: 16,
     overflow: "hidden",
@@ -138,7 +150,6 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.05)",
   },
   imageWrap: {
-    width: width > 768 ? "45%" : "100%",
     aspectRatio: 1365 / 681,  // ≈ 2:1
     justifyContent: "center",
     alignItems: "center",

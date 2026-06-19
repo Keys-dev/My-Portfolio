@@ -8,6 +8,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Platform
 } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import NavBar from "../components/NavBar";
@@ -130,6 +131,11 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: "#0a0a0a",
+    ...Platform.select({
+      web: {
+        minHeight: "100vh" as any,
+      },
+    }),
   },
   content: {
     paddingHorizontal: 32,

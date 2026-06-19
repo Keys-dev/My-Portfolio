@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Animated, Dimensions, Easing, Linking, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
+import { Animated, Dimensions, Easing, Linking, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Platform } from "react-native";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -113,7 +113,8 @@ export default function HeroSection({ onScrollHint }: HeroProps) {
 
   return (
     <View style={[styles.hero, {
-      height: height,
+      // 💡 FIX: Uses dynamic viewport height on web to ignore URL bar shifts
+      height: Platform.OS === 'web' ? ('100dvh' as any) : height,
     }]}>
       {/* Background noise texture overlay */}
       <View style={styles.noise} />

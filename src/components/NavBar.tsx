@@ -1,17 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Animated,
-  StyleSheet,
-  Dimensions,
-  Platform,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Animated, StyleSheet, Dimensions, Platform, useWindowDimensions} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
-const { width } = Dimensions.get('window');
 
 interface NavBarProps {
   scrollY?: Animated.Value;
@@ -20,6 +11,7 @@ interface NavBarProps {
 }
 
 export default function NavBar({ scrollY, activeRoute = 'Home', visible = true }: NavBarProps) {
+  const { width } = useWindowDimensions();
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const navOpacity = useRef(new Animated.Value(0)).current;
