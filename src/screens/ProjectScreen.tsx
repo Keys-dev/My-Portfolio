@@ -25,7 +25,12 @@ export default function ProjectScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalImage, setModalImage] = useState<any>(null);
   const [activeSlide, setActiveSlide] = useState(0);
-  const screens: any[] = project.screensImages ?? (project.image ? [project.image] : []);
+
+  const isMobileViewport = width < 768;
+  const screens: any[] = (isMobileViewport && project.mobileScreensImages?.length
+  ? project.mobileScreensImages
+  : project.screensImages
+) ?? (project.image ? [project.image] : []);
 
   // Update auto-scroll to use cardWidth
   // useEffect(() => {
@@ -258,6 +263,8 @@ export default function ProjectScreen() {
                 <Text style={styles.imagePlaceholderText}>Screens / UI</Text>
               )}
               </View>
+
+              <Text style={[styles.imagePlaceholderText, {textAlign: 'center', marginTop: 10, color: "#f0ede6"}]}>Click to view full image</Text>
 
             {/* Flow + System */}
             {/* <View style={styles.imageRow}>

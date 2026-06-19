@@ -7,6 +7,7 @@ export interface ProjectData {
   index: number;
   image: any;
   screensImages?: any[];  // array of screenshots for carousel
+  mobileScreensImages?: any[];  // add this
   flowImage?: any;        // flow diagram
   systemImage?: any;      // system architecture diagram
   description: string;
@@ -25,11 +26,19 @@ export const PROJECTS: ProjectData[] = [
     color: '#1a1f3a',
     index: 1,
     image: require('../../assets/images/vitalsync1.png'),         // hero image
+    
     screensImages: [
     require('../../assets/images/vitalsyncscr1.png'),
     require('../../assets/images/vitalsyncscr2.png'),
     require('../../assets/images/vitalsyncscr3.png'),
     ],
+
+    mobileScreensImages: [
+    require('../../assets/images/vitalsyncmob1.jpg'),
+    require('../../assets/images/vitalsyncmob2.jpg'),
+    require('../../assets/images/vitalsyncmob3.jpg'),
+    ],
+
     flowImage: null,
     systemImage: null,
 
@@ -51,6 +60,12 @@ export const PROJECTS: ProjectData[] = [
     require('../../assets/images/pokedexscr2.png'),
     require('../../assets/images/pokedexscr3.png'),
   ],
+
+  mobileScreensImages: [
+    require('../../assets/images/pokedexmob1.jpg'),
+    require('../../assets/images/pokedexmob2.jpg'),
+    require('../../assets/images/pokedexmob3.jpg'),
+    ],
   flowImage: null,
   systemImage: null,
 
@@ -72,6 +87,13 @@ export const PROJECTS: ProjectData[] = [
     require('../../assets/images/temposcr2.png'),
     require('../../assets/images/temposcr3.png'),
     ],
+
+    mobileScreensImages: [
+    require('../../assets/images/tempomob1.jpg'),
+    require('../../assets/images/tempomob2.jpg'),
+    require('../../assets/images/tempomob3.jpg'),
+    ],
+
     flowImage: null,
     systemImage: null,
 
@@ -92,6 +114,13 @@ export const PROJECTS: ProjectData[] = [
     require('../../assets/images/archivexscr2.png'),
     require('../../assets/images/archivexscr3.png'),
     ],
+
+    mobileScreensImages: [
+    require('../../assets/images/archivexmob1.jpg'),
+    require('../../assets/images/archivexmob2.jpg'),
+    require('../../assets/images/archivexmob3.jpg'),
+    ],
+
     flowImage: null,
     systemImage: null,
 
